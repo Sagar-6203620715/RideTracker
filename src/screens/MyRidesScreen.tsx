@@ -1,18 +1,20 @@
 // src/screens/MyRidesScreen.tsx
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { View, Text, FlatList, ActivityIndicator, Pressable, StyleSheet } from 'react-native';
 import { Ride } from '../types/ride';
 import { fetchRides } from '../services/rideService';
+import RideCard from '../components/RideCard';
+import FilterTabs, { FilterOption } from '../components/FilterTabs';
 
 export default function MyRidesScreen() {
   const [rides, setRides] = useState<Ride[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [filter, setFilter] = useState<FilterOption>('All');
 
   const loadRides = () => {
     setLoading(true);
     setError(null);
-
     fetchRides()
       .then((data) => setRides(data))
       .catch((err) => setError(err.message))
@@ -21,9 +23,18 @@ export default function MyRidesScreen() {
 
   useEffect(() => {
     loadRides();
-  }, []); // empty array = run once, when the screen first mounts
+  }, []);
 
-  // --- Loading state ---
+  // Derived data — recomputed only when `rides` or `filter` actually change.
+  const filteredRides = useMemo(() => {
+    if (filter === 'All') return rides;
+    if (filter === 'Upcoming') {
+      return rides.filter((r) => r.status === 'SCHEDULED' || r.status === 'IN_PROGRESS');
+    }
+    // filter === 'Completed' — note: intentionally excludes CANCELLED
+    return rides.filter((r) => r.status === 'COMPLETED');
+  }, [rides, filter]);
+
   if (loading) {
     return (
       <View style={styles.center}>
@@ -33,7 +44,6 @@ export default function MyRidesScreen() {
     );
   }
 
-  // --- Error state ---
   if (error) {
     return (
       <View style={styles.center}>
@@ -45,18 +55,21 @@ export default function MyRidesScreen() {
     );
   }
 
-  // --- Success state ---
   return (
     <View style={{ flex: 1 }}>
+      <View style={styles.header}>
+        <Text style={styles.headerTitle}>{rides.length} Total Rides</Text>
+      </View>
+
+      <FilterTabs selected={filter} onSelect={setFilter} />
+
       <FlatList
-        data={rides}
+        data={filteredRides}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.row}>
-            <Text>{item.pickup} → {item.drop}</Text>
-            <Text>{item.status}</Text>
-          </View>
+          <RideCard ride={item} onPress={() => console.log('Tapped', item.id)} />
         )}
+        contentContainerStyle={{ paddingVertical: 8 }}
       />
     </View>
   );
@@ -68,5 +81,6 @@ const styles = StyleSheet.create({
   errorText: { color: '#d32f2f', marginBottom: 12, textAlign: 'center' },
   retryButton: { backgroundColor: '#3478f6', paddingHorizontal: 20, paddingVertical: 10, borderRadius: 8 },
   retryText: { color: 'white', fontWeight: '600' },
-  row: { padding: 16, borderBottomWidth: 1, borderBottomColor: '#eee' },
+  header: { paddingHorizontal: 16, paddingTop: 12 },
+  headerTitle: { fontSize: 20, fontWeight: '700' },
 });
