@@ -19,10 +19,17 @@ function formatScheduledTime(isoString: string): string {
 }
 
 export default function RideCard({ ride, onPress }: RideCardProps) {
+
+  const isTappable = ride.status === 'IN_PROGRESS' || ride.status === 'SCHEDULED';
+
   return (
     <Pressable
-      onPress={onPress}
-      style={({ pressed }) => [styles.card, pressed && styles.cardPressed]}
+        onPress={isTappable ? onPress : undefined}
+        style={({ pressed }) => [
+            styles.card,
+            pressed && isTappable && styles.cardPressed,
+            !isTappable && styles.cardDisabled,
+        ]}
     >
       <View style={styles.topRow}>
         <Text style={styles.time}>{formatScheduledTime(ride.scheduledTime)}</Text>
@@ -56,6 +63,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     elevation: 2, // Android shadow equivalent
   },
+  cardDisabled: { opacity: 0.6 },
   cardPressed: {
     opacity: 0.85,
   },

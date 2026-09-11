@@ -1,21 +1,13 @@
 // src/navigation/RootNavigator.tsx
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Text, View } from 'react-native';
-import MyRidesScreen from '../screens/MyRidesScreen';   // ← new import
-
-// Keep RideDetailScreen as a placeholder for now — we build it in a later step
-function RideDetailScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Ride Detail Screen</Text>
-    </View>
-  );
-}
+import MyRidesScreen from '../screens/MyRidesScreen';
+import RideDetailScreen from '../screens/RideDetailScreen';
+import { Ride } from '../types/ride';
 
 export type RootStackParamList = {
   MyRides: undefined;
-  RideDetail: { rideId: string };
+  RideDetail: { ride: Ride };
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();

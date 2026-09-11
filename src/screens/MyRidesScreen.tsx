@@ -7,8 +7,13 @@ import RideCard from '../components/RideCard';
 import FilterTabs, { FilterOption } from '../components/FilterTabs';
 import LoadingSkeleton from '../components/LoadingSkeleton';
 import EmptyState from '../components/EmptyState';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../navigation/RootNavigator';
 
-export default function MyRidesScreen() {
+type Props = NativeStackScreenProps<RootStackParamList, 'MyRides'>;
+
+export default function MyRidesScreen({ navigation }: Props) {
+  // ...all your existing state and logic stays exactly the same...
   const [rides, setRides] = useState<Ride[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -83,7 +88,14 @@ export default function MyRidesScreen() {
         data={filteredRides}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-            <RideCard ride={item} onPress={() => console.log('Tapped', item.id)} />
+            <RideCard
+              ride={item}
+              onPress={() => {
+                if (item.status === 'IN_PROGRESS' || item.status === 'SCHEDULED') {
+                  navigation.navigate('RideDetail', { ride: item });
+                }
+              }}
+            />
         )}
         contentContainerStyle={filteredRides.length === 0 ? { flex: 1 } : { paddingVertical: 8 }}
         refreshing={refreshing}
