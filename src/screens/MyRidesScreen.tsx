@@ -5,12 +5,29 @@ import { Ride } from '../types/ride';
 import { fetchRides } from '../services/rideService';
 import RideCard from '../components/RideCard';
 import FilterTabs, { FilterOption } from '../components/FilterTabs';
+import LoadingSkeleton from '../components/LoadingSkeleton';
+import EmptyState from '../components/EmptyState';
 
 export default function MyRidesScreen() {
   const [rides, setRides] = useState<Ride[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<FilterOption>('All');
+  
+  // add refreshing state alongside your existing state
+  const [refreshing, setRefreshing] = useState(false);
+
+  // separate refresh handler — same fetch, different loading flag
+  const handleRefresh = () => {
+  setRefreshing(true);
+  fetchRides()
+      .then((data) => {
+      setRides(data);
+      setError(null); // clear any old error if refresh succeeds
+      })
+      .catch((err) => setError(err.message))
+      .finally(() => setRefreshing(false));
+  };
 
   const loadRides = () => {
     setLoading(true);
@@ -37,9 +54,8 @@ export default function MyRidesScreen() {
 
   if (loading) {
     return (
-      <View style={styles.center}>
-        <ActivityIndicator size="large" color="#3478f6" />
-        <Text style={styles.centerText}>Loading rides...</Text>
+      <View style={{ flex: 1, paddingTop: 12 }}>
+        <LoadingSkeleton />
       </View>
     );
   }
@@ -67,10 +83,15 @@ export default function MyRidesScreen() {
         data={filteredRides}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <RideCard ride={item} onPress={() => console.log('Tapped', item.id)} />
+            <RideCard ride={item} onPress={() => console.log('Tapped', item.id)} />
         )}
-        contentContainerStyle={{ paddingVertical: 8 }}
-      />
+        contentContainerStyle={filteredRides.length === 0 ? { flex: 1 } : { paddingVertical: 8 }}
+        refreshing={refreshing}
+        onRefresh={handleRefresh}
+        ListEmptyComponent={
+            <EmptyState message={`No ${filter.toLowerCase()} rides found.`} />
+        }
+        />
     </View>
   );
 }
