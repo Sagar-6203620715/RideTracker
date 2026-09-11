@@ -58,7 +58,25 @@ export default function RideDetailScreen({ route }: Props) {
       </View>
 
       {/* pickup/drop timeline block from Step 9 stays here, unchanged */}
+      <View style={styles.addressCard}>
+        <View style={styles.addressRow}>
+          <View style={styles.dot} />
+          <View style={styles.addressText}>
+            <Text style={styles.addressLabel}>Pickup</Text>
+            <Text style={styles.addressValue}>{ride.pickup}</Text>
+          </View>
+        </View>
 
+        <View style={styles.connector} />
+
+        <View style={styles.addressRow}>
+          <View style={[styles.dot, styles.dotDestination]} />
+          <View style={styles.addressText}>
+            <Text style={styles.addressLabel}>Drop</Text>
+            <Text style={styles.addressValue}>{ride.drop}</Text>
+          </View>
+        </View>
+      </View>
       <Pressable style={styles.sosButton} onPress={handleSOS}>
         <Text style={styles.sosButtonText}>🆘 Emergency SOS</Text>
       </Pressable>
@@ -67,7 +85,23 @@ export default function RideDetailScreen({ route }: Props) {
 }
 
 const styles = StyleSheet.create({
-  // ...keep all your existing style keys from Steps 9 & 10, then add:
+  container: { flex: 1, backgroundColor: '#f5f5f5' },
+  stepperCard: {
+    backgroundColor: 'white',
+    borderRadius: 14,
+    padding: 16,
+    marginHorizontal: 16,
+    marginBottom: 16,
+  },
+  sectionTitle: { fontSize: 15, fontWeight: '700', marginBottom: 12 },
+  advanceButton: {
+    marginTop: 16,
+    backgroundColor: '#3478f6',
+    paddingVertical: 12,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  advanceButtonText: { color: 'white', fontWeight: '600' },
   sosButton: {
     backgroundColor: '#dc2626',
     marginHorizontal: 16,
@@ -77,4 +111,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sosButtonText: { color: 'white', fontWeight: '700', fontSize: 15 },
+  addressCard: {
+    backgroundColor: 'white',
+    borderRadius: 14,
+    padding: 16,
+    marginHorizontal: 16,
+    marginBottom: 16,
+  },
+  addressRow: { flexDirection: 'row', alignItems: 'flex-start' },
+  dot: { width: 10, height: 10, borderRadius: 5, backgroundColor: '#3478f6', marginTop: 4, marginRight: 12 },
+  dotDestination: { backgroundColor: '#dc2626' },
+  connector: { width: 1, height: 24, backgroundColor: '#ddd', marginLeft: 4.5, marginVertical: 2 },
+  addressText: { flex: 1 },
+  addressLabel: { fontSize: 12, color: '#999', marginBottom: 2 },
+  addressValue: { fontSize: 15, fontWeight: '600' },
 });
