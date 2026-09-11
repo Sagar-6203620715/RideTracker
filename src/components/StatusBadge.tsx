@@ -1,6 +1,14 @@
 // src/components/StatusBadge.tsx
 import { View, Text, StyleSheet } from 'react-native';
 import { RideStatus } from '../types/ride';
+import { colors } from '../theme/color';
+
+const STATUS_COLORS: Record<RideStatus, string> = {
+  SCHEDULED: colors.warning,
+  IN_PROGRESS: colors.primary,
+  COMPLETED: colors.success,
+  CANCELLED: colors.danger,
+};
 
 interface StatusBadgeProps {
   status: RideStatus;
@@ -8,12 +16,7 @@ interface StatusBadgeProps {
 
 // A lookup object mapping each status to its display color.
 // Keeping this OUTSIDE the component means it's created once, not on every render.
-const STATUS_COLORS: Record<RideStatus, string> = {
-  SCHEDULED: '#f59e0b',    // amber
-  IN_PROGRESS: '#3478f6',  // blue
-  COMPLETED: '#16a34a',    // green
-  CANCELLED: '#dc2626',    // red
-};
+
 
 const STATUS_LABELS: Record<RideStatus, string> = {
   SCHEDULED: 'Scheduled',
