@@ -6,7 +6,6 @@ A 2-screen React Native (Expo) app for viewing scheduled rides and tracking a li
 - Expo (Managed Workflow) + TypeScript
 - React Navigation (Native Stack)
 - Local mock data + simulated async service (setTimeout + Promise)
-- Plain React state (useState, useEffect) — no Redux
 
 ## Features
 - **My Rides** — list of rides with pull-to-refresh, filter tabs (All / Upcoming / Completed), loading skeleton, error + retry, and empty states
@@ -42,5 +41,4 @@ src/
 3. Scan the QR code with the **Expo Go** app (Android/iOS) to run on a physical device, or press `a` / `i` in the terminal for an emulator/simulator.
 
 ## Notes
-- The map (bonus feature) was intentionally skipped — pickup/drop is instead shown via a route-timeline UI in the ride detail screen.
 - The mock service randomly fails ~15% of the time to allow the error/retry state to be tested.
