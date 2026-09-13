@@ -2,6 +2,10 @@
 
 A 2-screen React Native (Expo) app for viewing scheduled rides and tracking a live ride with real-time status updates.
 
+## 🎥 Demo
+
+[▶️ Watch the Demo Video](https://drive.google.com/file/d/18eZ1vNJgKVYNKnO0so_rkbrwhO04NRkQ/view?usp=drivesdk)
+
 ## Tech Stack
 - Expo (Managed Workflow) + TypeScript
 - React Navigation (Native Stack)
