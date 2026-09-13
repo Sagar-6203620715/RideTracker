@@ -13,15 +13,36 @@ A 2-screen React Native (Expo) app for viewing scheduled rides and tracking a li
 
 ## Project Structure
 
+```text
 src/
-├── screens/        # App screens: MyRidesScreen, RideDetailScreen
-├── components/     # Reusable UI components: RideCard, StatusBadge, FilterTabs, etc.
-├── types/          # Shared TypeScript types: Ride, Driver, RideStatus, TripStep
-├── services/       # Simulated async service for fetching ride data
-├── data/            # Mock ride and driver data
-├── navigation/      # Typed navigation setup: RootNavigator
-└── theme/           # Shared design tokens: colors, spacing, and styles
-
+├── screens/         # App screens
+│   ├── MyRidesScreen
+│   └── RideDetailScreen
+│
+├── components/      # Reusable UI components
+│   ├── RideCard
+│   ├── StatusBadge
+│   ├── FilterTabs
+│   ├── DriverCard
+│   ├── StatusStepper
+│   ├── EmptyState
+│   └── LoadingSkeleton
+│
+├── types/            # Shared TypeScript types
+│   ├── Ride
+│   ├── Driver
+│   ├── RideStatus
+│   └── TripStep
+│
+├── services/         # Simulated async ride-fetching service
+├── data/             # Mock ride and driver data
+├── navigation/       # Typed navigation setup
+│   └── RootNavigator
+│
+└── theme/            # Shared design tokens
+    ├── Colors
+    └── Spacing
+```
 
 
 ## How to Run
